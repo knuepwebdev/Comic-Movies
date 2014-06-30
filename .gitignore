@@ -17,5 +17,6 @@ pickle-email-*.html
 .secret
 config/local_env.yml
 public/assets
+app/assets/images/*
 !public/assets/manifest-36b584ccffc252b0467bc559cf4c5c81.json
 .env
