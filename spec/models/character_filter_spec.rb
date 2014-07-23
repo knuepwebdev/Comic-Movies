@@ -1,10 +1,10 @@
 require 'spec_helper'
 
 describe CharacterFilter do
-  let(:movie) { create(:archived_movie_with_characters) }
-  let(:characters) { movie.characters }
-  let(:mary_jane) { characters.find_by_name('Mary Jane') }
-  let(:norman_osborn) { characters.find_by_name('norman osborn') }
+  let(:mary_jane) {double('Character', side_name: 'hero')}
+  let(:norman_osborn) {
+    double('Character', side_name: 'villain')}  
+  let(:characters) { [mary_jane, norman_osborn] }
   let(:character_filter) { CharacterFilter.new(characters) }
 
   it "filters a movie's heroes" do

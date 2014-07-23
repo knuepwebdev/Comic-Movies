@@ -13,6 +13,6 @@ class CharacterFilter
 
   private
   def filter_characters(side_name)
-    @characters.select { |character| character.side.name == side_name }
+    @characters.select { |character| character.side_name == side_name }
   end
 end
