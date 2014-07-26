@@ -1,21 +1,20 @@
 require 'spec_helper'
 
 describe MovieFilter do
-  let(:upcoming) { create(:type, name: 'upcoming') }
-  let(:archived) { create(:type, name: 'archives') }
-  let(:upcoming_movie) { build(:upcoming_movie) }
-  let(:archived_movie) { build(:archived_movie) }
-  let(:movies) { [upcoming_movie, archived_movie] }
-  let(:create_types) { upcoming and archived }
+  let(:upcoming) { double('Type') }
+  let(:archives) { double('Type') }
+  let(:spider_man) { double('Movie', type: upcoming) }
+  let(:bat_man) { double('Movie', type: archives) }
+  let(:movies) { [spider_man, bat_man] }
   let(:movie_filter) { MovieFilter.new(movies) }
 
-  before(:each) { create_types }
-
   it 'filters upcoming movies' do
-    expect(movie_filter.upcoming_movies).to match_array [upcoming_movie]
+    Type.should_receive(:find_type).with('upcoming').and_return(upcoming)
+    expect(movie_filter.upcoming_movies).to match_array [spider_man]
   end
 
   it 'filters archived movies' do
-    expect(movie_filter.archived_movies).to match_array [archived_movie]
+    Type.should_receive(:find_type).with('archives').and_return(archives)
+    expect(movie_filter.archived_movies).to match_array [bat_man]
   end
 end
