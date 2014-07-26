@@ -5,10 +5,14 @@ require 'rspec/rails'
 require 'rspec/autorun'
 require 'dotenv'
 require 'capybara/poltergeist'
+require 'webmock/rspec'
 Capybara.javascript_driver = :poltergeist
 Capybara.register_driver :poltergeist do |app|
   Capybara::Poltergeist::Driver.new(app, js_errors: false)
 end
+WebMock.disable_net_connect!(
+  allow_localhost: true,
+  allow: [/amazonaws.com/, /i.annihil.us/])
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
 Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
@@ -43,6 +47,10 @@ RSpec.configure do |config|
 
   config.before(:each) do
     DatabaseCleaner.start
+    marvel_stub = MarvelStub.new('get', /gateway.marvel.com/)
+    comic_vine_stub = ComicVineStub.new('get', /comicvine.com/)
+    api_stubber = ApiStubber.new([marvel_stub, comic_vine_stub]) 
+    api_stubber.generate_stubs
   end
 
   config.after(:each) do

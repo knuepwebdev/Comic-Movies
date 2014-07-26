@@ -1,14 +1,15 @@
 class Marvel
   include HTTParty
 
-  def self.fetch_data(id)
+  def self.fetch_images(id)
     uri = URI.parse(URI.encode("http://gateway.marvel.com/v1/public/characters/#{id}?#{MarvelParameters.credentials}"))
     response = HTTParty.get(uri)
-    response_body = JSON.parse(response.body)
+    results = JSON.parse(response.body)
+    marvel_data_format = MarvelDataFormat.new(results)
     begin
-      results = response_body['data']['results'][0]
-      image = response_body['data']['results'][0]['thumbnail']['path']
-      link = response_body['data']['results'][0]['urls'][0]['url']
+      character = marvel_data_format.character
+      image = marvel_data_format.thumbnail
+      link = marvel_data_format.link
     rescue Exception => e
       puts "Marvel fetch data exception: #{e.message}"
     end

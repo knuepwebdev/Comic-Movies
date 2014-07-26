@@ -32,6 +32,7 @@ group :test do
   gem 'shoulda-matchers'
   gem "faker", "~> 1.1.2"
   gem 'poltergeist'
+  gem 'webmock'
 end
 
 group :production do
