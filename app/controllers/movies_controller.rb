@@ -1,6 +1,6 @@
 class MoviesController < ApplicationController 
   def index
-    movies = Movie.all
+    movies = Movie.includes(:type)
     @movie_filter = MovieFilter.new(movies)
   end
 
